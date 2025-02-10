@@ -7,7 +7,7 @@ The CV Submissions Manager is a web application designed to streamline the proce
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/lmakinaa/submissions-manager
+   git clone git@github.com:lmakinaa/submissions-manager.git
    cd submissions-manager
    ```
 
