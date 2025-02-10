@@ -54,7 +54,7 @@ const Admin = () => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `${full_name}-${id}-cv.pdf`); // or use the actual filename
+      link.setAttribute('download', `${full_name}-${id}-cv.pdf`);
       document.body.appendChild(link);
       link.click();
     } catch (error) {
