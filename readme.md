@@ -3,9 +3,9 @@
 The **CV Submission Manager** is a web application designed to streamline the process of managing and reviewing CV submissions. Built with a **FastAPI** backend and a **React** frontend, this application allows users to upload CVs, track application statuses, and review submissions efficiently.
 
 ## Features
-- Upload and manage CV submissions
-- Track application statuses
-- Review and filter submitted CVs
+- Upload and manage CV submissions (in the root page '/')
+- Track application statuses (in the admin page '/admin')
+- Review and filter submitted CVs (in the admin page '/admin')
 - FastAPI backend with React frontend
 
 ## Getting Started
