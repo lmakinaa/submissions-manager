@@ -1,12 +1,28 @@
 from fastapi import FastAPI, UploadFile, Form, Depends, HTTPException
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 import shutil
 import os
+from fastapi.middleware.cors import CORSMiddleware
 from .database import get_db, Application, UPLOAD_DIR
+
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:5173",
+    "localhost:5173"
+]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 @app.post("/apply/")
 def apply(
@@ -21,8 +37,12 @@ def apply(
     
     application = Application(full_name=full_name, email=email, cv_filename=cv.filename)
     db.add(application)
-    db.commit()
-    db.refresh(application)
+    try:
+        db.commit()
+        db.refresh(application)
+    except IntegrityError as e:
+        print(e)
+        raise HTTPException(status_code=400, detail="An application with this email already exists")
     return {"message": "Application submitted successfully!"}
 
 
