@@ -6,7 +6,7 @@ import shutil
 import os
 from fastapi.middleware.cors import CORSMiddleware
 from .database import get_db, Application, UPLOAD_DIR
-
+from .schemas import ApplicationCreate
 
 app = FastAPI()
 
@@ -14,7 +14,6 @@ origins = [
     "http://localhost:5173",
     "localhost:5173"
 ]
-
 
 app.add_middleware(
     CORSMiddleware,
