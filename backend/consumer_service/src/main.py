@@ -2,7 +2,7 @@ from confluent_kafka import Consumer, KafkaError
 
 def consume_messages(topics):
     consumer = Consumer({
-        'bootstrap.servers': 'localhost:9092',
+        'bootstrap.servers': 'kafka:9092',
         'group.id': 'mygroup',
         'auto.offset.reset': 'earliest'
     })

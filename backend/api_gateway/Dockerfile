@@ -13,4 +13,4 @@ RUN python3 -m venv venv
 
 RUN . venv/bin/activate && pip install -r requirements.txt
 
-CMD ["uvicorn", "main:app", "--reload"]
+CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0"]

@@ -4,7 +4,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 import shutil
 import os
-from .database import get_db, Application, UPLOAD_DIR
+from .database import get_db, UPLOAD_DIR
+from .models import Application
 
 app = FastAPI()
 

@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:3000"
+    restart: unless-stopped
+
+  auth_service:
+    build: ./backend/auth_service
+    restart: unless-stopped
+
+  consumer_service:
+    build: ./backend/consumer_service
+    restart: unless-stopped
+
+  api_gateway:
+    build: ./backend/api_gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - auth_service
+      - core_service
+      - consumer_service
+    restart: unless-stopped
+
+  core_service:
+    build: ./backend/core_service
+    restart: unless-stopped
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    restart: unless-stopped
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    restart: unless-stopped
