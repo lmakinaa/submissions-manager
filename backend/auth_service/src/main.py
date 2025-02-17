@@ -4,14 +4,15 @@ from datetime import timedelta
 from .models import User
 from .schemas import UserCreate, Token
 from sqlalchemy.orm import Session
+from .database import get_db
 from .utilities import ACCESS_TOKEN_EXPIRE_MINUTES, get_password_hash, authenticate_user, create_access_token, get_current_user
 
 app = FastAPI()
 
 # Endpoints
 @app.post("/token", response_model=Token)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = authenticate_user(db, form_data.username, form_data.password)
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
