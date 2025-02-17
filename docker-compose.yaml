@@ -1,21 +1,22 @@
-version: "3.8"
 services:
-  frontend:
-    build: ./frontend
-    ports:
-      - "8080:3000"
-    restart: unless-stopped
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - "8080:3000"
+  #   restart: unless-stopped
 
   auth_service:
+    container_name: auth_service
     build: ./backend/auth_service
-    restart: unless-stopped
-
-  consumer_service:
-    build: ./backend/consumer_service
+    networks:
+      - submissions-manager-network
     restart: unless-stopped
 
   api_gateway:
+    container_name: api_gateway
     build: ./backend/api_gateway
+    networks:
+      - submissions-manager-network
     ports:
       - "8000:8000"
     depends_on:
@@ -25,17 +26,34 @@ services:
     restart: unless-stopped
 
   core_service:
+    container_name: core_service
     build: ./backend/core_service
+    networks:
+      - submissions-manager-network
+    restart: unless-stopped
+
+  consumer_service:
+    container_name: consumer_service
+    build: ./backend/consumer_service
+    networks:
+      - submissions-manager-network
+    depends_on:
+      - kafka
     restart: unless-stopped
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
+    networks:
+      - submissions-manager-network
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
     restart: unless-stopped
 
   kafka:
+    container_name: kafka
     image: confluentinc/cp-kafka:latest
+    networks:
+      - submissions-manager-network
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
@@ -43,3 +61,7 @@ services:
     depends_on:
       - zookeeper
     restart: unless-stopped
+
+networks:
+  submissions-manager-network:
+    name:  submissions-manager-network

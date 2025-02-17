@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from .database import get_db
 from .models import User
 from sqlalchemy.orm import Session
+from typing import Union
 
 SECRET_KEY = "auth-secret" # replace with an env variable
 ALGORITHM = "HS256"
@@ -30,7 +31,7 @@ def authenticate_user(username: str, password: str, db: Session = Depends(get_db
         return False
     return user
 
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
+def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta

@@ -2,15 +2,12 @@ from debian:bullseye
 
 RUN apt-get update && apt-get install -y \
     python3 \
-    python3-pip \
-    python3-venv
+    python3-pip 
 
 COPY src /app/src
 
 WORKDIR /app
 
-RUN python3 -m venv venv
+RUN pip install -r src/requirements.txt
 
-RUN . venv/bin/activate && pip install -r src/requirements.txt
-
-CMD ["uvicorn", "src.main:app", "--reload"]
+CMD ["uvicorn", "src.main:app", "--reload", "--host", "0.0.0.0"]
