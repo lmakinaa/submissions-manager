@@ -10,6 +10,8 @@ services:
     build: ./backend/auth_service
     networks:
       - submissions-manager-network
+    volumes:
+      - ./backend/auth_service/src:/app/src
     restart: unless-stopped
 
   api_gateway:
@@ -23,6 +25,8 @@ services:
       - auth_service
       - core_service
       - consumer_service
+    volumes:
+      - ./backend/api_gateway/src:/app
     restart: unless-stopped
 
   core_service:

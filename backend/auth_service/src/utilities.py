@@ -25,7 +25,7 @@ def get_password_hash(password):
 def get_user(db, username: str):
     return db.query(User).filter(User.username == username).first()
 
-def authenticate_user(username: str, password: str, db: Session = Depends(get_db)):
+def authenticate_user(username: str, password: str, db: Session):
     user = get_user(db, username)
     if not user or not verify_password(password, user.hashed_password):
         return False
