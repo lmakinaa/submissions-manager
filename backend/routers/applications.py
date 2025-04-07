@@ -164,3 +164,25 @@ def download_file(
         media_type=content_type
     )
 
+@router.delete("/{id}")
+def delete_application(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user)
+):
+    # Get application with form check for ownership
+    application = (
+        db.query(Application)
+        .join(Form)
+        .filter(
+            Application.id == id,
+            Form.creator_id == current_user.id
+        )
+        .first()
+    )
+    if not application:
+        raise HTTPException(status_code=404, detail="Application not found or access denied")
+    
+    db.delete(application)
+    db.commit()
+    
